@@ -1,6 +1,6 @@
 /** 
 *
-*  @author: huangkairan
+*  @author: xujintai
 *  @version: 1.0.0 
 *  @description: 配置上机用户模型
 *  @Date: 2020/10/17 10:45

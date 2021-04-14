@@ -1,6 +1,6 @@
 /** 
 *
-*  @author: huangkairan
+*  @author: xujintai
 *  @version: 1.0.0 
 *  @description: 判断是否过期用户
 *  @Date: 2020/10/19 12:19

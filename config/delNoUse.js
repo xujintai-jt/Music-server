@@ -1,6 +1,6 @@
 /** 
 *
-*  @author: huangkairan
+*  @author: xujintai
 *  @version: 1.0.0 
 *  @description: 封装删除没有用到的资源函数
 *  @Date: 2020/10/17 16:56

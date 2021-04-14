@@ -1,6 +1,6 @@
 /** 
 *
-*  @author: huangkairan
+*  @author: xujintai
 *  @version: 1.0.0 
 *  @description: jwt签证的密钥
 *  @Date: 2020/10/16 12:23

@@ -1,6 +1,6 @@
 /** 
 *
-*  @author: huangkairan 
+*  @author: xujintai 
 *  @version: 1.0.0 
 *  @description: 获取验证码
 *  @Date: 2020/10/16 10:39

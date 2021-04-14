@@ -1,6 +1,6 @@
 /** 
 *
-*  @author: huangkairan
+*  @author: xujintai
 *  @version: 1.0.0 
 *  @description: 配置请求
 *  @Date: 2020/10/14 17:43

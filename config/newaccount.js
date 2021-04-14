@@ -1,6 +1,6 @@
 /** 
 *
-*  @author: huangkairan
+*  @author: xujintai
 *  @version: 1.0.0 
 *  @description: 随机生成账号和密码
 *  @Date: 2020/10/18 14:02

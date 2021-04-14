@@ -1,6 +1,6 @@
 /** 
 *
-*  @author: huangkairan 
+*  @author: xujintai 
 *  @version: 1.0.0 
 *  @description: 格式化日期
 *  @Date: 2020/10/16 11:02

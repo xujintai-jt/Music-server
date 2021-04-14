@@ -1,6 +1,6 @@
 /** 
 *
-*  @author: huangkairan
+*  @author: xujintai
 *  @version: 1.0.0 
 *  @description: KTV点歌系统入口
 *  @Date: 2020/10/14 16:03

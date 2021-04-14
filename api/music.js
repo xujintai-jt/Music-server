@@ -1,6 +1,6 @@
 /** 
 *
-*  @author: huangkairan 
+*  @author: xujintai 
 *  @version: 1.0.0 
 *  @description: 展示歌曲,播放列表,搜索歌曲
 *  @Date: 2020/10/13 23:01

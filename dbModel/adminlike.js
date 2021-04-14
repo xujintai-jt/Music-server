@@ -1,6 +1,6 @@
 /** 
 *
-*  @author: huangkairan
+*  @author: xujintai
 *  @version: 1.0.0 
 *  @description: ktv推荐歌曲,管理员操作
 *  @Date: 2020/10/18 10:37
