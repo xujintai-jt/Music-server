@@ -21,9 +21,9 @@ const adminModel = mongoose.Schema({
     password:{
         require:true,
         type:String,
-        set(val){
-            return bcrypt.hashSync(val, 10)
-        }
+        // set(val){
+        //     return bcrypt.hashSync(val, 10)
+        // }
     },
     identity:{
         // require:true,

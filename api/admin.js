@@ -25,6 +25,7 @@ require("../config/Date");
 const Admin = require("../dbModel/admin");
 const Music = require("../dbModel/music");
 const AdminLike = require("../dbModel/adminlike");
+const Remarks = require("../dbModel/remark");
 const UserAndOrders = require("../dbModel/user");
 
 // 上传歌曲到服务器文件夹下
@@ -359,13 +360,11 @@ router.post("/account/login", (req, res) => {
             console.log(err);
             return res.status(500).json({ status: "500", result: "未知错误" });
           } else {
-            res
-              .status(200)
-              .json({
-                status: "200",
-                result: "登录成功",
-                token: "Bearer " + token,
-              });
+            res.status(200).json({
+              status: "200",
+              result: "登录成功",
+              token: "Bearer " + token,
+            });
           }
         });
       }
@@ -396,6 +395,31 @@ router.post(
       }
     });
   }
+);
+
+//管理员删除评论信息
+router.post(
+  "/remark/del",
+  async (req, res) => {
+    const { remark_id } = req.body;
+    console.log(remark_id);
+    await Remarks.findOneAndRemove({ _id: remark_id }, (err, doc) => {
+      if (!err) {
+        res.status(200).json({ status: "200", result: "评论删除成功" });
+      }
+      res.status(500).json({ status: "500", result: "评论删除失败" });
+    });
+  }
+
+  // .then((remarks) => {
+  //   remarks.save().then(() => {
+  //     console.log("评论删除成功");
+  //     res.json({ status: "200", result: "评论删除成功" });
+  //   });
+  // }).catch((err) => {
+  //   console.log("评论删除失败");
+  //   res.send(err)
+  // });
 );
 
 module.exports = router;

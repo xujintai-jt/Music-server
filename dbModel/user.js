@@ -26,6 +26,10 @@ const userModel = mongoose.Schema({
         require:true,
         type:String,
     },
+    sex: {
+        require:true,
+        type:String,
+    },
 })
 
 module.exports = mongoose.model("users", userModel);
