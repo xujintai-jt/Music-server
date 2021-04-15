@@ -15,5 +15,5 @@ mongoose.connect(mongodbURI, {
     useFindAndModify:false,
     useUnifiedTopology: true
 }).then(() => {
-    console.log(`Mongodb is Connected.Please have a great coding.`);
+    console.log(`数据库已连接.`);
 })

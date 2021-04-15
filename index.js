@@ -2,7 +2,7 @@
 *
 *  @author: xujintai
 *  @version: 1.0.0 
-*  @description: KTV点歌系统入口
+*  @description: 音乐点播系统入口
 *  @Date: 2020/10/14 16:03
 *
 */ 
@@ -48,5 +48,5 @@ app.get("*", (req, res) => {
 const port = process.env.PORT || 8633;
 app.listen(port, err => {
     if(err) throw err;
-    console.log(`Server is running on port [${port}].`);
+    console.log(`服务器运行在端口[${port}].`);
 })
