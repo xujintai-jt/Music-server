@@ -135,14 +135,17 @@ router.get("/userlike", async (req, res) => {
   //判断用户是否已添加收藏
   await UserLike.find({ userid }).then((docs) => {
     const userlikes = [];
+    //docs：此用户所有的音乐收藏数
     docs.forEach(async (item, index) => {
       //将每一项的musicid取出，进入音乐表中通过musicid找到此music的完整信息
       const { musicid } = item;
       await Music.findOne({ _id: musicid })
         .then((doc) => {
           //将筛选出的音乐信息对象保存进数组
-          userlikes.push(doc);
-          if (index === docs.length - 1) {
+          if (doc) {
+            userlikes.push(doc);
+          }
+          if (userlikes.length === docs.length) {
             console.log("返回音乐收藏信息成功");
             res.status(200).json({
               status: "200",
@@ -162,6 +165,20 @@ router.get("/userlike", async (req, res) => {
   });
   //第一个then结束
 });
+
+//用户移除收藏音乐
+// 删除歌曲
+router.post(
+  "/userlike/del",
+  async (req, res) => {
+    const { musicid,userid } = req.body;
+    await UserLike.findOneAndRemove({ musicid,userid }, (err, doc) => {
+      if (!err) {
+      return  res.status(200).json({ status: 200, result: "该收藏音乐移除成功" });
+      }
+      res.status(500).json({ status: 500, result: "该收藏音乐移除失败" });
+    });
+  })
 
 // 获取热歌
 router.post(

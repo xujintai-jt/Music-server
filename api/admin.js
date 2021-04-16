@@ -406,6 +406,7 @@ router.post(
     await Remarks.findOneAndRemove({ _id: remark_id }, (err, doc) => {
       if (!err) {
         res.status(200).json({ status: "200", result: "评论删除成功" });
+        return
       }
       res.status(500).json({ status: "500", result: "评论删除失败" });
     });
