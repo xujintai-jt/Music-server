@@ -15,6 +15,7 @@ const router = express.Router();
 
 const Music = require("../dbModel/music");
 const AdminLike = require("../dbModel/adminlike");
+const UserLike = require("../dbModel/userlike");
 const isBadAccount = require("../config/isBadAccount");
 
 // 获取所有歌曲(需要authenticate)
@@ -39,7 +40,7 @@ router.get("/nowmusic", async (req, res) => {
   const _id = req.query.id;
   await Music.findOne({ _id })
     .then((music) => {
-        if (music) {
+      if (music) {
         res.sendFile(path.resolve(__dirname, "../static/music/" + music.src));
         const sum = parseInt(music.playcount) + 1;
         const count = {
@@ -75,8 +76,8 @@ router.get("/poster", (req, res) => {
 // 通过songName搜索歌曲
 router.post(
   "/search/byname",
-//   passport.authenticate("jwt", { session: false }), //验证信息
-    async (req, res) => {
+  //   passport.authenticate("jwt", { session: false }), //验证信息
+  async (req, res) => {
     const songName = req.body.searchName.trim();
     await Music.find({ songName: { $regex: songName, $options: "i" } }).then(
       (songs) => {
@@ -95,6 +96,72 @@ router.post(
 );
 
 // user操作
+// 用户添加收藏音乐
+router.post("/userlike", async (req, res) => {
+  const { body } = req;
+  const { musicid, mobile } = body;
+  //判断用户是否已添加收藏
+  await UserLike.find({ mobile, musicid })
+    .then((docs) => {
+      if (docs.length === 0) {
+        UserLike.create(body, (err, docs) => {
+          if (err) {
+            res.send(err);
+            console.log("用户音乐收藏数据插入失败");
+            return;
+          } else {
+            console.log("用户音乐收藏数据插入成功");
+            res.status(200).json({
+              status: "200",
+              result: "收藏音乐成功,请进入音乐收藏界面查看!",
+            });
+          }
+        });
+      } else {
+        res
+          .status(203)
+          .json({ status: "203", result: "音乐已收藏，请勿重复添加收藏!" });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send(err);
+    });
+});
+
+// 用户获取收藏音乐
+router.get("/userlike", async (req, res) => {
+  const { userid } = req.query;
+  //判断用户是否已添加收藏
+  await UserLike.find({ userid }).then((docs) => {
+    const userlikes = [];
+    docs.forEach(async (item, index) => {
+      //将每一项的musicid取出，进入音乐表中通过musicid找到此music的完整信息
+      const { musicid } = item;
+      await Music.findOne({ _id: musicid })
+        .then((doc) => {
+          //将筛选出的音乐信息对象保存进数组
+          userlikes.push(doc);
+          if (index === docs.length - 1) {
+            console.log("返回音乐收藏信息成功");
+            res.status(200).json({
+              status: "200",
+              result: userlikes,
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({
+            status: "500",
+            result: err,
+          });
+          // res.send(err)
+        });
+    });
+  });
+  //第一个then结束
+});
 
 // 获取热歌
 router.post(
