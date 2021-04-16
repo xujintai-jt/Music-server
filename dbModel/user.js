@@ -6,6 +6,7 @@
 *  @Date: 2020/10/17 10:45
 *
 */ 
+<<<<<<< HEAD
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 
@@ -41,6 +42,32 @@ const userModel = mongoose.Schema({
         require:true,
         type:String
     }
+=======
+
+const mongoose = require("mongoose");
+
+const userModel = mongoose.Schema({
+    password:{
+        require:true,
+        type:String,
+    },
+    username:{
+        require:true,
+        type:String,
+    },
+    mobile: {
+        require:true,
+        type:String,
+    },
+    age: {
+        require:true,
+        type:String,
+    },
+    sex: {
+        require:true,
+        type:String,
+    },
+>>>>>>> dev
 })
 
 module.exports = mongoose.model("users", userModel);
