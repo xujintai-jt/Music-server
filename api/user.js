@@ -67,17 +67,16 @@ router.post("/login", async (req, res) => {
     if (err) {
       console.log("查询注册信息失败");
     } else if (docs.length === 0) {
-      res.writeHead(201, { "Content-Type": "text/html; charset=utf-8" });
-      res.end("该手机号未注册!");
+      res.status(202).json({ status: "202", result: "该手机号未注册" });
     } else {
       Users.find({ mobile, password }, (err, docs) => {
         if (err) {
           console.log("查询注册信息失败");
         } else if (docs.length === 0) {
-          res.writeHead(201, { "Content-Type": "text/html; charset=utf-8" });
-          res.end("密码错误");
+          res.status(201).json({ status: "201", result: "密码错误" });
+          // res.end("密码错误");
         } else {
-          res.end("登陆成功");
+          res.status(200).json({ status: "200", result: "登录成功" });
         }
       });
     }
@@ -126,9 +125,19 @@ router.post("/remark", async (req, res) => {
   });
 });
 
+//查询用户评论信息
+router.get("/query/remarks", async (req, res) => {
+  const { musicid } = req.query
+  Remarks.find({musicid}, (err, docs) => {
+    if (err) {
+      console.log("加载评论信息失败");
+    }  else {
+      res.send(docs);
+    }
+  });
+});
 
-
-//查询用户信息
+//根据用户手机号查询用户信息
 router.get("/query", async (req, res) => {
   const { mobile } = req.query;
   Users.findOne({ mobile }, (err, docs) => {
