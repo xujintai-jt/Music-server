@@ -255,18 +255,31 @@ router.post(
 );
 
 // 风格点歌
-router.post(
-  "/style",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    if (await isBadAccount(req.user)) {
-      const style = req.body.style;
+// router.post(
+//   "/style",
+//   passport.authenticate("jwt", { session: false }),
+//   async (req, res) => {
+//     if (await isBadAccount(req.user)) {
+//       const style = req.body.style;
+//       Music.find({ style }).then((musics) => {
+//         res.send(musics);
+//       });
+//     } else {
+//       res.status(401).json({ status: "401", result: "帐号过期,请联系管理员" });
+//     }
+//   }
+// );
+
+// 风格点歌
+router.post("/style",async (req, res) => {
+  const { style } = req.body;
       Music.find({ style }).then((musics) => {
         res.send(musics);
-      });
-    } else {
-      res.status(401).json({ status: "401", result: "帐号过期,请联系管理员" });
-    }
+      }).catch((err) => {
+        console.log(err);
+        res.send(err);
+      })
+  
   }
 );
 
