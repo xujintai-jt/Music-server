@@ -29,7 +29,7 @@ const isBadAccount = require("../config/isBadAccount");
 //             })
 // })
 
-// 获取所有歌曲
+// 获取所有音乐信息
 router.get("/all", async (req, res) => {
   await Music.find().then((musics) => {
     musics.length
@@ -38,7 +38,21 @@ router.get("/all", async (req, res) => {
   });
 });
 
-// 通过歌曲id获取歌曲
+// 通过歌曲id获取歌曲信息
+router.get("/queryid", async (req, res) => {
+  const {id} =req.query
+  await Music.find({ _id:id })
+    .then((musics) => {
+    musics.length
+      ? res.status(200).send({ status: 200, result: musics })
+      : res.status(201).send({ status: 201, result: "音乐为空" });
+    })
+    .catch((err) => {
+      res.send({ status: 500, result: err });
+    });
+});
+
+// 通过歌曲id获取歌曲文件
 router.get("/nowmusic", async (req, res) => {
   const _id = req.query.id;
   await Music.findOne({ _id })
@@ -133,7 +147,7 @@ router.post("/userlike", async (req, res) => {
     });
 });
 
-// 用户获取收藏音乐
+// 获取指定用户收藏音乐
 router.get("/userlike", async (req, res) => {
   const { userid } = req.query;
   //判断用户是否已添加收藏
@@ -169,6 +183,20 @@ router.get("/userlike", async (req, res) => {
   });
   //第一个then结束
 });
+
+// 获取所有用户收藏音乐
+router.get("/alluserlike", async (req, res) => {
+  await UserLike
+    .find()
+    .then((docs) => {
+      console.log("获取所有用户收藏音乐数据成功");
+      res.status(200).send({status:200,result:docs})
+    })
+    .catch((err) => {
+      res.status(500).send({status:500,result:err})
+    });
+});
+
 
 //用户移除收藏音乐
 // 删除歌曲
