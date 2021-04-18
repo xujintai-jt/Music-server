@@ -25,6 +25,7 @@ require("../config/Date");
 
 // 数据库模型
 const Admin = require("../dbModel/admin");
+const Users = require("../dbModel/user");
 const Music = require("../dbModel/music");
 const AdminLike = require("../dbModel/adminlike");
 
@@ -424,6 +425,24 @@ router.post(
   //   console.log("评论删除失败");
   //   res.send(err)
   // });
+);
+
+//管理员删除用户信息
+router.post(
+  "/user/del",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const {_id} = req.body; 
+    await Users.findOneAndRemove({_id }, function (err, docs) { 
+      if (err){ 
+        console.log(err) 
+      } 
+       else { 
+        console.log("用户删除成功", docs);
+        res.send({ status: "200", result: "删除成功" });
+      }  
+    });           
+  }
 );
 
 module.exports = router;

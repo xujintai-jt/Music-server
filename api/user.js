@@ -96,6 +96,7 @@ router.post("/edit", async (req, res) => {
   nowUser.sex = req.body.sex;
   nowUser.age = req.body.age;
   nowUser.password = req.body.password;
+  console.log(nowUser);
   await Users.findOneAndUpdate(
     { mobile },
     { $set: nowUser },
@@ -151,6 +152,20 @@ router.get("/query", async (req, res) => {
       res.send("该手机号未注册！");
     } else {
       res.send(docs);
+    }
+  });
+});
+
+//查询所有用户信息
+router.get("/query/all", async (req, res) => {
+  Users.find({}, (err, docs) => {
+    if (err) {
+      console.log("查询用户信息失败");
+    } else if (docs.length === 0) {
+      res.status(201).json({ status: 201, result: "暂无用户信息" });
+    } else {
+      // res.send(docs);
+      res.status(200).send({ status: 200, result:docs });
     }
   });
 });
