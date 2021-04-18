@@ -214,10 +214,16 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     await AdminLike.findOneAndRemove({ s_id: req.body._id }).then((songs) => {
-      songs.save().then(() => {
+      songs
+        .save()
+        .then(() => {
         console.log("歌曲移除成功");
-        res.json({ status: "200", result: "删除成功" });
-      });
+        res.send({ status: "200", result: "删除成功" });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.send(err)
+        });
     });
   }
 );
@@ -323,11 +329,11 @@ router.post("/account/register", (req, res) => {
       newAdmin
         .save()
         .then(() => {
-          res.json({ status: "200", result: "注册成功" });
+          res.json({ status: 200, result: "注册成功" });
         })
         .catch((err) => {
           console.log(err);
-          res.status(500).json({ status: "500", result: "未知错误,注册失败" });
+          res.status(500).json({ status: 500, result: "未知错误,注册失败" });
         });
     }
   });
@@ -444,6 +450,65 @@ router.post(
     });           
   }
 );
+
+//删除管理员信息
+router.post(
+  "/admin/del",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const {_id} = req.body; 
+    await Admin.findOneAndRemove({_id }, function (err, docs) { 
+      if (err){ 
+        console.log(err) 
+      } 
+       else { 
+        console.log("管理员删除成功", docs);
+        res.send({ status: "200", result: "管理员删除成功" });
+      }  
+    });           
+  }
+);
+
+//查询所有管理员信息
+router.get("/query/all", async (req, res) => {
+  Admin.find({}, (err, docs) => {
+    if (err) {
+      console.log("查询管理员信息失败");
+    } else if (docs.length === 0) {
+      res.status(201).json({ status: 201, result: "暂无管理员信息" });
+    } else {
+      // res.send(docs);
+      res.status(200).send({ status: 200, result:docs });
+    }
+  });
+});
+
+//编辑管理员信息
+router.post("/edit", async (req, res) => {
+  const { id } = req.body;
+  console.log(id);
+  const nowAdmin = {};
+  nowAdmin.username = req.body.username;
+  nowAdmin.email = req.body.email;
+  nowAdmin.password = req.body.password;
+  console.log(nowAdmin);
+  await Admin.findOneAndUpdate(
+    { _id:id },
+    { $set: nowAdmin },
+    { new: true }
+  ).then((nowAdmin) => {
+    nowAdmin
+      .save()
+      .then(() => {
+        console.log("管理员信息更新成功");
+        res.status(200).json({ status: 200, result: "管理员信息更新成功" });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ status: 500, result: "更新失败,未知错误" });
+      });
+  });
+});
 
 module.exports = router;
 
