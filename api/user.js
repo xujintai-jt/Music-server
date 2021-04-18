@@ -92,6 +92,7 @@ router.post("/edit", async (req, res) => {
   nowUser.sex = req.body.sex;
   nowUser.age = req.body.age;
   nowUser.password = req.body.password;
+  console.log(nowUser);
   await Users.findOneAndUpdate(
     { mobile },
     { $set: nowUser },
