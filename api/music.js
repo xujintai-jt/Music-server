@@ -31,7 +31,12 @@ const isBadAccount = require("../config/isBadAccount");
 
 // 获取所有音乐信息
 router.get("/all", async (req, res) => {
-  await Music.find().then((musics) => {
+  await Music
+    .find()
+    .collation({"locale": "zh", numericOrdering:true})
+    .sort({playcount:-1})
+    .then((musics) => {
+      console.log(musics);
     musics.length
       ? res.send(musics)
       : res.json({ status: 200, result: "音乐为空" });
@@ -151,13 +156,16 @@ router.post("/userlike", async (req, res) => {
 router.get("/userlike", async (req, res) => {
   const { userid } = req.query;
   //判断用户是否已添加收藏
-  await UserLike.find({ userid }).then((docs) => {
+  await UserLike
+    .find({ userid })
+    .then((docs) => {
     const userlikes = [];
     //docs：此用户所有的音乐收藏数
     docs.forEach(async (item, index) => {
       //将每一项的musicid取出，进入音乐表中通过musicid找到此music的完整信息
       const { musicid } = item;
-      await Music.findOne({ _id: musicid })
+      await Music
+        .findOne({ _id: musicid })
         .then((doc) => {
           //将筛选出的音乐信息对象保存进数组
           if (doc) {

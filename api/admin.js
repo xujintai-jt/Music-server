@@ -194,7 +194,11 @@ router.post(
 // router.get("/adminlike/all", passport.authenticate("jwt", { session: false }), async (req, res) => {
 router.get("/adminlike/all", async (req, res) => {
   await Music.find().then((allsongs) => {
-    AdminLike.find().then((adminlikes) => {
+    AdminLike
+      .find()
+      .collation({ "locale": "zh", numericOrdering: true })
+      .sort({ playcount: -1 })
+      .then((adminlikes) => {
       var result = [];
       allsongs.forEach((item) => {
         adminlikes.forEach((al) => {
