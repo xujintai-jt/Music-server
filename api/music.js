@@ -319,21 +319,39 @@ router.post("/style",async (req, res) => {
   }
 );
 
+// // 明星点歌
+// router.post(
+//   "/artist",
+//   passport.authenticate("jwt", { session: false }),
+//   async (req, res) => {
+//     if (await isBadAccount(req.user)) {
+//       const artist = req.body.artist;
+//       Music.find({ artist }).then((musics) => {
+//         res.send(musics);
+//       });
+//     } else {
+//       res.status(401).json({ status: "401", result: "帐号过期,请联系管理员" });
+//     }
+//   }
+// );
+
+
 // 明星点歌
-router.post(
-  "/artist",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    if (await isBadAccount(req.user)) {
-      const artist = req.body.artist;
-      Music.find({ artist }).then((musics) => {
+router.post( "/artist",async (req, res) => {
+      const {artist} = req.body;
+  Music.find({ artist })
+    .then((musics) => {
+      console.log(musics);
         res.send(musics);
-      });
-    } else {
-      res.status(401).json({ status: "401", result: "帐号过期,请联系管理员" });
-    }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send(err)
+    });
   }
 );
+ 
+  
 
 // 搜索歌曲
 router.post(
